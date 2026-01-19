@@ -104,15 +104,13 @@
 
     main {
       margin-top: 32px;
-      display: grid;
-      grid-template-columns: minmax(0, 3fr) minmax(0, 2.2fr);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       gap: 24px;
-    }
-
-    @media (max-width: 768px) {
-      main {
-        grid-template-columns: 1fr;
-      }
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     .card {
@@ -122,6 +120,13 @@
       box-shadow: 0 12px 40px rgba(23, 15, 52, 0.12);
       border: 1px solid rgba(123, 92, 255, 0.12);
       backdrop-filter: blur(12px);
+      width: 100%;
+    }
+
+    @media (max-width: 768px) {
+      main {
+        max-width: 100%;
+      }
     }
 
     .card-header {
