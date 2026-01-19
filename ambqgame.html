@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Amb & Q · Baby Registry</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #f9f5ff;
+      --card: #ffffff;
+      --primary: #7b5cff;
+      --accent: #ffc7de;
+      --text-main: #241b3a;
+      --text-soft: #6b627f;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top left, #ffeef6, #f9f5ff 45%, #eef4ff);
+      color: var(--text-main);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .page {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 32px 20px 64px;
+    }
+
+    header {
+      text-align: center;
+      padding: 32px 0 16px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.8);
+      border: 1px solid rgba(123, 92, 255, 0.12);
+      font-size: 12px;
+      color: var(--text-soft);
+      margin-bottom: 12px;
+    }
+
+    .tag-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+    }
+
+    h1 {
+      font-size: clamp(2.4rem, 4vw, 3rem);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .subtitle {
+      margin-top: 8px;
+      font-size: 0.98rem;
+      color: var(--text-soft);
+    }
+
+    .due-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 18px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 10px 30px rgba(40, 20, 80, 0.18);
+      font-size: 0.85rem;
+      color: var(--text-soft);
+    }
+
+    .due-pill {
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    main {
+      margin-top: 32px;
+      display: grid;
+      grid-template-columns: minmax(0, 3fr) minmax(0, 2.2fr);
+      gap: 24px;
+    }
+
+    @media (max-width: 768px) {
+      main {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.92);
+      border-radius: 24px;
+      padding: 22px 22px 20px;
+      box-shadow: 0 12px 40px rgba(23, 15, 52, 0.12);
+      border: 1px solid rgba(123, 92, 255, 0.12);
+      backdrop-filter: blur(12px);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .card-title {
+      font-size: 0.98rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-soft);
+    }
+
+    .pill-light {
+      font-size: 0.7rem;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: rgba(123, 92, 255, 0.08);
+      color: var(--text-soft);
+    }
+
+    .love-text {
+      font-size: 0.97rem;
+      margin-top: 10px;
+      color: var(--text-main);
+    }
+
+    .love-text p + p {
+      margin-top: 8px;
+    }
+
+    .highlight {
+      color: var(--primary);
+      font-weight: 500;
+    }
+
+    .timeline {
+      margin-top: 14px;
+      border-left: 2px solid rgba(123, 92, 255, 0.3);
+      padding-left: 14px;
+    }
+
+    .moment {
+      position: relative;
+      padding: 10px 0 6px;
+    }
+
+    .moment::before {
+      content: "";
+      position: absolute;
+      left: -16px;
+      top: 16px;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #fff;
+      border: 2px solid var(--primary);
+    }
+
+    .moment-label {
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-soft);
+      margin-bottom: 2px;
+    }
+
+    .moment-title {
+      font-size: 0.94rem;
+      font-weight: 600;
+    }
+
+    .moment-note {
+      font-size: 0.85rem;
+      color: var(--text-soft);
+    }
+
+    .registry-card {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .registry-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top right, rgba(255, 199, 222, 0.22), transparent 60%);
+      pointer-events: none;
+    }
+
+    .registry-intro {
+      font-size: 0.9rem;
+      color: var(--text-soft);
+      margin-top: 8px;
+      margin-bottom: 14px;
+    }
+
+    .registry-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .registry-link {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 12px;
+      border-radius: 999px;
+      background: #f5f0ff;
+      color: var(--text-main);
+      font-size: 0.9rem;
+      transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+    }
+
+    .registry-link span {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .registry-link-icon {
+      width: 20px;
+      height: 20px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 12px;
+      box-shadow: 0 6px 16px rgba(123, 92, 255, 0.45);
+    }
+
+    .registry-link:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 22px rgba(30, 15, 60, 0.22);
+      background: #efe6ff;
+    }
+
+    .registry-note {
+      font-size: 0.8rem;
+      color: var(--text-soft);
+      opacity: 0.85;
+    }
+
+    .baby-pulse {
+      margin-top: 10px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.8rem;
+      color: var(--text-soft);
+    }
+
+    .pulse-dot {
+      display: inline-flex;
+      gap: 3px;
+    }
+
+    .pulse-dot span {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--accent);
+      animation: pulse 1.4s ease-in-out infinite;
+    }
+
+    .pulse-dot span:nth-child(2) {
+      animation-delay: 0.1s;
+    }
+
+    .pulse-dot span:nth-child(3) {
+      animation-delay: 0.2s;
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: translateY(0);
+        opacity: 0.7;
+      }
+      50% {
+        transform: translateY(-3px);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(0);
+        opacity: 0.7;
+      }
+    }
+
+    footer {
+      margin-top: 40px;
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--text-soft);
+    }
+
+    /* Baby mini game styles */
+    #baby-game {
+      margin-top: 8px;
+      border-radius: 18px;
+      padding: 14px 14px 16px;
+      background: radial-gradient(circle at top, #ffeef6, #f6f4ff);
+      border: 1px dashed rgba(123, 92, 255, 0.35);
+    }
+
+    .baby-game-top {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+      color: #6b627f;
+      margin-bottom: 8px;
+    }
+
+    #baby-field {
+      position: relative;
+      height: 180px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.9);
+      overflow: hidden;
+      box-shadow: inset 0 0 0 1px rgba(123, 92, 255, 0.08);
+    }
+
+    #baby-message {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      color: #9a8fb0;
+      text-align: center;
+      padding: 0 20px;
+    }
+
+    .binky {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 20%, #ffffff, #ffc7de);
+      box-shadow: 0 8px 20px rgba(255, 119, 178, 0.5);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      user-select: none;
+      transition: transform 0.12s ease, opacity 0.12s ease;
+    }
+
+    .binky:active {
+      transform: scale(0.85);
+    }
+
+    .binky.pop {
+      transform: scale(0.4);
+      opacity: 0;
+    }
+
+    #baby-start {
+      margin-top: 10px;
+      width: 100%;
+      border: none;
+      border-radius: 999px;
+      padding: 10px 12px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      background: linear-gradient(135deg, #7b5cff, #ffc7de);
+      color: #fff;
+      cursor: pointer;
+      box-shadow: 0 8px 18px rgba(123, 92, 255, 0.4);
+      transition: transform 0.1s ease, box-shadow 0.1s ease, opacity 0.1s ease;
+    }
+
+    #baby-start:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 22px rgba(123, 92, 255, 0.45);
+    }
+
+    #baby-start:active {
+      transform: translateY(0);
+      box-shadow: 0 6px 14px rgba(123, 92, 255, 0.3);
+    }
+
+    #baby-start[disabled] {
+      opacity: 0.6;
+      cursor: default;
+      box-shadow: none;
+      transform: none;
+    }
+
+    @media (max-width: 600px) {
+      #baby-field {
+        height: 160px;
+      }
+
+      .binky {
+        width: 34px;
+        height: 34px;
+        font-size: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <div class="tag">
+        <span class="tag-dot"></span>
+        Amb &amp; Q · Baby on the way
+      </div>
+      <h1>Amb &amp; Q</h1>
+      <p class="subtitle">
+        A little bit of Waldorf, a little bit of ocean, a whole lot of love.
+      </p>
+      <div class="due-badge">
+        <span class="due-pill">Due · July 2026</span>
+        <span>Counting down to the tiniest new member of the crew.</span>
+      </div>
+    </header>
+
+    <main>
+      <!-- Our Story -->
+      <section class="card">
+        <div class="card-header">
+          <div class="card-title">Our Story</div>
+          <div class="pill-light">From chat to family</div>
+        </div>
+        <div class="love-text">
+          <p>
+            It started in a <span class="highlight">Waldorf, Maryland community chat</span> where two strangers kept noticing each other—and one of them was lowkey fighting himself, trying not to fall while very much trying to get her attention anyway.
+          </p>
+          <p>
+            With a little pressure and a spontaneous idea, a <span class="highlight">Virginia Beach birthday trip</span> came to life, full of late-night talks, ocean waves, and playlists that made it pretty obvious this was way more than a weekend vibe.
+          </p>
+          <p>
+            Months of calls, hanging out, and “are we doing this or not?” conversations later, they decided to lock in around his birthday with a trip to <span class="highlight">Super Mario World</span>, both already clear on what they wanted and the inner work it would take to really show up for it.
+          </p>
+          <p>
+            A few months after that came the sweetest plot twist: a baby on the way, due July 2026—proof that sometimes the internet actually gets it right and turns a group chat into a family story.
+          </p>
+        </div>
+
+        <div class="timeline">
+          <div class="moment">
+            <div class="moment-label">Chapter 01</div>
+            <div class="moment-title">Waldorf chat</div>
+            <div class="moment-note">
+              Community messages, subtle likes, and “who is that?” energy.
+            </div>
+          </div>
+          <div class="moment">
+            <div class="moment-label">Chapter 02</div>
+            <div class="moment-title">VA Beach birthday</div>
+            <div class="moment-note">
+              Waves, talks, and a weekend that felt suspiciously like the start of something real.
+            </div>
+          </div>
+          <div class="moment">
+            <div class="moment-label">Chapter 03</div>
+            <div class="moment-title">Locked in</div>
+            <div class="moment-note">
+              His birthday, Super Mario World, and a mutual “yes, it’s us.”
+            </div>
+          </div>
+          <div class="moment">
+            <div class="moment-label">Chapter 04</div>
+            <div class="moment-title">Baby loading...</div>
+            <div class="moment-note">
+              Expected July 2026 — the tiniest new player joins the game.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Registry & Details -->
+      <section class="card registry-card">
+        <div class="card-header">
+          <div class="card-title">Baby Registry</div>
+          <div class="pill-light">Your love means everything</div>
+        </div>
+        <p class="registry-intro">
+          We’re building a cozy little world for this baby — soft blankets, tiny
+          onesies, and all the practical things that help new parents breathe
+          a little easier.
+        </p>
+
+        <div class="registry-list">
+          <!-- Replace # with your real registry links -->
+          <a class="registry-link" href="#" target="_blank" rel="noreferrer">
+            <span>
+              <span class="registry-link-icon">♥</span>
+              Babylist registry
+            </span>
+            <span>Open</span>
+          </a>
+          <a class="registry-link" href="#" target="_blank" rel="noreferrer">
+            <span>
+              <span class="registry-link-icon">A</span>
+              Amazon registry
+            </span>
+            <span>Open</span>
+          </a>
+          <a class="registry-link" href="#" target="_blank" rel="noreferrer">
+            <span>
+              <span class="registry-link-icon">T</span>
+              Target registry
+            </span>
+            <span>Open</span>
+          </a>
+        </div>
+
+        <p class="registry-note">
+          Your presence, prayers, and messages mean just as much as any gift.
+          If you’d like to help, feel free to use any registry that works best
+          for you.
+        </p>
+
+        <div class="baby-pulse">
+          <div class="pulse-dot">
+            <span></span><span></span><span></span>
+          </div>
+          <span>Baby is already practicing late-night party mode.</span>
+        </div>
+      </section>
+    </main>
+
+    <!-- Baby Mini Game: Catch the Binkies -->
+    <section class="card" style="margin-top:24px;">
+      <div class="card-header">
+        <div class="card-title">Baby Mini Game</div>
+        <div class="pill-light">Catch the Binkies</div>
+      </div>
+      <p class="registry-intro">
+        Tap the floating binkies to earn soothe points before the timer runs out.
+      </p>
+
+      <div id="baby-game">
+        <div class="baby-game-top">
+          <div>Score: <span id="baby-score">0</span></div>
+          <div>Time: <span id="baby-time">30</span>s</div>
+        </div>
+        <div id="baby-field">
+          <!-- Binkies will appear here -->
+          <div id="baby-message">Tap “Start” to begin</div>
+        </div>
+        <button id="baby-start">Start</button>
+      </div>
+    </section>
+
+    <footer>
+      Made with love in 2026 · Amb &amp; Q
+    </footer>
+  </div>
+
+  <script>
+    (function () {
+      const field = document.getElementById("baby-field");
+      const scoreEl = document.getElementById("baby-score");
+      const timeEl = document.getElementById("baby-time");
+      const startBtn = document.getElementById("baby-start");
+      const message = document.getElementById("baby-message");
+
+      let score = 0;
+      let timeLeft = 30;
+      let timerId = null;
+      let spawnId = null;
+      let gameActive = false;
+
+      function resetGame() {
+        score = 0;
+        timeLeft = 30;
+        scoreEl.textContent = score;
+        timeEl.textContent = timeLeft;
+
+        Array.from(field.querySelectorAll(".binky")).forEach(b => b.remove());
+        message.textContent = "Tap “Start” to begin";
+        message.style.opacity = "1";
+      }
+
+      function endGame() {
+        gameActive = false;
+        clearInterval(timerId);
+        clearInterval(spawnId);
+        timerId = null;
+        spawnId = null;
+        startBtn.disabled = false;
+        message.textContent = score >= 15
+          ? "Baby is soothed. You crushed it!"
+          : "Baby is still a little wiggly. Try again!";
+        message.style.opacity = "1";
+      }
+
+      function spawnBinky() {
+        if (!gameActive) return;
+
+        const rect = field.getBoundingClientRect();
+        const size = 40;
+        const padding = 10;
+
+        const maxX = rect.width - size - padding;
+        const maxY = rect.height - size - padding;
+
+        const x = Math.random() * maxX + padding;
+        const y = Math.random() * maxY + padding;
+
+        const binky = document.createElement("div");
+        binky.className = "binky";
+        binky.style.left = x + "px";
+        binky.style.top = y + "px";
+        binky.textContent = "🍼";
+
+        const lifespan = 1400 + Math.random() * 600;
+        const removeTimeout = setTimeout(() => {
+          if (binky.parentNode) binky.remove();
+        }, lifespan);
+
+        binky.addEventListener("click", () => {
+          if (!gameActive) return;
+          clearTimeout(removeTimeout);
+          score++;
+          scoreEl.textContent = score;
+          binky.classList.add("pop");
+          setTimeout(() => binky.remove(), 120);
+        });
+
+        field.appendChild(binky);
+      }
+
+      function startGame() {
+        resetGame();
+        gameActive = true;
+        startBtn.disabled = true;
+        message.style.opacity = "0";
+
+        timerId = setInterval(() => {
+          timeLeft--;
+          timeEl.textContent = timeLeft;
+          if (timeLeft <= 0) {
+            endGame();
+          }
+        }, 1000);
+
+        spawnId = setInterval(spawnBinky, 550);
+        spawnBinky();
+      }
+
+      startBtn.addEventListener("click", startGame);
+      resetGame();
+    })();
+  </script>
+</body>
+</html>
