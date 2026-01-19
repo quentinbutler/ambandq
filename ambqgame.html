@@ -324,6 +324,21 @@
       color: var(--text-soft);
     }
 
+    .announcement-photo {
+      margin-top: 28px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .announcement-photo img {
+      width: 100%;
+      height: auto;
+      border-radius: 20px;
+      box-shadow: 0 12px 40px rgba(23, 15, 52, 0.18);
+      border: 3px solid rgba(255, 255, 255, 0.9);
+    }
+
     /* Baby mini game styles */
     #baby-game {
       margin-top: 8px;
@@ -447,6 +462,9 @@
         <span class="due-pill">Due · July 2026</span>
         <span>Counting down to the tiniest new member of the crew.</span>
       </div>
+      <div class="announcement-photo">
+        <img src="baby-announcement.jpg" alt="We caught a legendary! Baby Pokemon announcement with Mew, Eevee, and ultrasound photo" />
+      </div>
     </header>
 
     <main>
@@ -464,7 +482,7 @@
             With a little pressure and a spontaneous idea, a <span class="highlight">Virginia Beach birthday trip</span> came to life, full of late-night talks, ocean waves, and playlists that made it pretty obvious this was way more than a weekend vibe.
           </p>
           <p>
-            Months of calls, hanging out, and “are we doing this or not?” conversations later, they decided to lock in around his birthday with a trip to <span class="highlight">Super Mario World</span>, both already clear on what they wanted and the inner work it would take to really show up for it.
+            Months of calls, hanging out, and "are we doing this or not?" conversations later, they decided to lock in around his birthday with a trip to <span class="highlight">Super Mario World</span>, both already clear on what they wanted and the inner work it would take to really show up for it.
           </p>
           <p>
             A few months after that came the sweetest plot twist: a baby on the way, due July 2026—proof that sometimes the internet actually gets it right and turns a group chat into a family story.
@@ -476,7 +494,7 @@
             <div class="moment-label">Chapter 01</div>
             <div class="moment-title">Waldorf chat</div>
             <div class="moment-note">
-              Community messages, subtle likes, and “who is that?” energy.
+              Community messages, subtle likes, and "who is that?" energy.
             </div>
           </div>
           <div class="moment">
@@ -490,7 +508,7 @@
             <div class="moment-label">Chapter 03</div>
             <div class="moment-title">Locked in</div>
             <div class="moment-note">
-              His birthday, Super Mario World, and a mutual “yes, it’s us.”
+              His birthday, Super Mario World, and a mutual "yes, it's us."
             </div>
           </div>
           <div class="moment">
@@ -510,31 +528,16 @@
           <div class="pill-light">Your love means everything</div>
         </div>
         <p class="registry-intro">
-          We’re building a cozy little world for this baby — soft blankets, tiny
+          We're building a cozy little world for this baby — soft blankets, tiny
           onesies, and all the practical things that help new parents breathe
           a little easier.
         </p>
 
         <div class="registry-list">
-          <!-- Replace # with your real registry links -->
-          <a class="registry-link" href="#" target="_blank" rel="noreferrer">
-            <span>
-              <span class="registry-link-icon">♥</span>
-              Babylist registry
-            </span>
-            <span>Open</span>
-          </a>
-          <a class="registry-link" href="#" target="_blank" rel="noreferrer">
+          <a class="registry-link" href="https://www.amazon.com/baby-reg/aq--quentin-butler-july-2026-accokeek/NFNGG073Z9JP" target="_blank" rel="noreferrer">
             <span>
               <span class="registry-link-icon">A</span>
               Amazon registry
-            </span>
-            <span>Open</span>
-          </a>
-          <a class="registry-link" href="#" target="_blank" rel="noreferrer">
-            <span>
-              <span class="registry-link-icon">T</span>
-              Target registry
             </span>
             <span>Open</span>
           </a>
@@ -542,7 +545,7 @@
 
         <p class="registry-note">
           Your presence, prayers, and messages mean just as much as any gift.
-          If you’d like to help, feel free to use any registry that works best
+          If you'd like to help, feel free to use any registry that works best
           for you.
         </p>
 
@@ -568,11 +571,11 @@
       <div id="baby-game">
         <div class="baby-game-top">
           <div>Score: <span id="baby-score">0</span></div>
-          <div>Time: <span id="baby-time">30</span>s</div>
+          <div>Time: <span id="baby-time">10</span>s</div>
         </div>
         <div id="baby-field">
           <!-- Binkies will appear here -->
-          <div id="baby-message">Tap “Start” to begin</div>
+          <div id="baby-message">Tap "Start" to begin</div>
         </div>
         <button id="baby-start">Start</button>
       </div>
@@ -592,19 +595,19 @@
       const message = document.getElementById("baby-message");
 
       let score = 0;
-      let timeLeft = 30;
+      let timeLeft = 10;
       let timerId = null;
       let spawnId = null;
       let gameActive = false;
 
       function resetGame() {
         score = 0;
-        timeLeft = 30;
+        timeLeft = 10;
         scoreEl.textContent = score;
         timeEl.textContent = timeLeft;
 
         Array.from(field.querySelectorAll(".binky")).forEach(b => b.remove());
-        message.textContent = "Tap “Start” to begin";
+        message.textContent = "Tap 'Start' to begin";
         message.style.opacity = "1";
       }
 
@@ -615,7 +618,7 @@
         timerId = null;
         spawnId = null;
         startBtn.disabled = false;
-        message.textContent = score >= 15
+        message.textContent = score >= 8
           ? "Baby is soothed. You crushed it!"
           : "Baby is still a little wiggly. Try again!";
         message.style.opacity = "1";
