@@ -83,12 +83,76 @@
       align-items: center;
       gap: 8px;
       margin-top: 18px;
-      padding: 10px 14px;
-      border-radius: 999px;
+      padding: 16px 24px;
+      border-radius: 20px;
       background: rgba(255, 255, 255, 0.9);
       box-shadow: 0 10px 30px rgba(40, 20, 80, 0.18);
       font-size: 0.85rem;
       color: var(--text-soft);
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    #countdown {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .flip-unit {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .flip-card {
+      position: relative;
+      width: 60px;
+      height: 70px;
+      perspective: 300px;
+    }
+
+    .flip-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.6s;
+      transform-style: preserve-3d;
+    }
+
+    .flip-card.flip .flip-card-inner {
+      transform: rotateX(180deg);
+    }
+
+    .flip-card-front,
+    .flip-card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #fff;
+      font-size: 1.5rem;
+      font-weight: 700;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(123, 92, 255, 0.3);
+    }
+
+    .flip-card-back {
+      transform: rotateX(180deg);
+    }
+
+    .flip-label {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-soft);
+      font-weight: 500;
     }
 
     .due-pill {
@@ -399,9 +463,8 @@
 <body>
   <div class="page">
     <header>
-      <h1>Amb &amp; Q</h1>
+      <h1>Amber &amp; Quentin</h1>
       <div class="due-badge">
-        <span class="due-pill">Due · July 7, 2026</span>
         <span id="countdown">Calculating...</span>
       </div>
       <div class="announcement-photo">
@@ -476,17 +539,48 @@
   </div>
 
   <script>
-    // Countdown Timer
+    // Flip Countdown Timer
     (function() {
       const countdownEl = document.getElementById("countdown");
       const dueDate = new Date("July 7, 2026 00:00:00").getTime();
+      let previousValues = { months: 0, days: 0, hours: 0, minutes: 0, seconds: 0 };
+
+      function createFlipUnit(value, label) {
+        return `
+          <div class="flip-unit">
+            <div class="flip-card" data-label="${label}">
+              <div class="flip-card-inner">
+                <div class="flip-card-front">${value}</div>
+                <div class="flip-card-back">${value}</div>
+              </div>
+            </div>
+            <div class="flip-label">${label}</div>
+          </div>
+        `;
+      }
+
+      function updateFlipCard(label, newValue) {
+        const card = countdownEl.querySelector(`[data-label="${label}"]`);
+        if (!card) return;
+
+        const front = card.querySelector('.flip-card-front');
+        const back = card.querySelector('.flip-card-back');
+        
+        back.textContent = newValue;
+        card.classList.add('flip');
+        
+        setTimeout(() => {
+          front.textContent = newValue;
+          card.classList.remove('flip');
+        }, 600);
+      }
 
       function updateCountdown() {
         const now = new Date().getTime();
         const distance = dueDate - now;
 
         if (distance < 0) {
-          countdownEl.textContent = "Baby is here! 🎉";
+          countdownEl.innerHTML = '<div style="font-size: 1.2rem;">Baby is here! 🎉</div>';
           return;
         }
 
@@ -496,7 +590,28 @@
         const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-        countdownEl.textContent = `${months}mo ${days}d ${hours}h ${minutes}m ${seconds}s`;
+        const currentValues = { months, days, hours, minutes, seconds };
+
+        // Initialize on first run
+        if (!countdownEl.querySelector('.flip-unit')) {
+          countdownEl.innerHTML = 
+            createFlipUnit(months, 'months') +
+            createFlipUnit(days, 'days') +
+            createFlipUnit(hours, 'hours') +
+            createFlipUnit(minutes, 'mins') +
+            createFlipUnit(seconds, 'secs');
+          previousValues = currentValues;
+          return;
+        }
+
+        // Update only changed values with flip animation
+        if (currentValues.months !== previousValues.months) updateFlipCard('months', months);
+        if (currentValues.days !== previousValues.days) updateFlipCard('days', days);
+        if (currentValues.hours !== previousValues.hours) updateFlipCard('hours', hours);
+        if (currentValues.minutes !== previousValues.minutes) updateFlipCard('mins', minutes);
+        if (currentValues.seconds !== previousValues.seconds) updateFlipCard('secs', seconds);
+
+        previousValues = currentValues;
       }
 
       updateCountdown();
