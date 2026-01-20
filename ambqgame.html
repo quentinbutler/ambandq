@@ -151,62 +151,6 @@
       color: var(--text-soft);
     }
 
-    .love-text {
-      font-size: 0.97rem;
-      margin-top: 10px;
-      color: var(--text-main);
-    }
-
-    .love-text p + p {
-      margin-top: 8px;
-    }
-
-    .highlight {
-      color: var(--primary);
-      font-weight: 500;
-    }
-
-    .timeline {
-      margin-top: 14px;
-      border-left: 2px solid rgba(123, 92, 255, 0.3);
-      padding-left: 14px;
-    }
-
-    .moment {
-      position: relative;
-      padding: 10px 0 6px;
-    }
-
-    .moment::before {
-      content: "";
-      position: absolute;
-      left: -16px;
-      top: 16px;
-      width: 9px;
-      height: 9px;
-      border-radius: 50%;
-      background: #fff;
-      border: 2px solid var(--primary);
-    }
-
-    .moment-label {
-      font-size: 0.76rem;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: var(--text-soft);
-      margin-bottom: 2px;
-    }
-
-    .moment-title {
-      font-size: 0.94rem;
-      font-weight: 600;
-    }
-
-    .moment-note {
-      font-size: 0.85rem;
-      color: var(--text-soft);
-    }
-
     .registry-card {
       position: relative;
       overflow: hidden;
@@ -454,13 +398,11 @@
 </head>
 <body>
   <div class="page">
+    <header>
       <h1>Amb &amp; Q</h1>
-      <p class="subtitle">
-        
-      </p>
       <div class="due-badge">
-        <span class="due-pill">Due · July 2026</span>
-        <span>Counting down to the tiniest new member of the crew.</span>
+        <span class="due-pill">Due · July 7, 2026</span>
+        <span id="countdown">Calculating...</span>
       </div>
       <div class="announcement-photo">
         <img src="baby-announcement.jpg" alt="We caught a legendary! Baby Pokemon announcement with Mew, Eevee, and ultrasound photo" />
@@ -468,8 +410,6 @@
     </header>
 
     <main>
-      </section>
-
       <!-- Registry & Details -->
       <section class="card registry-card">
         <div class="card-header">
@@ -505,30 +445,30 @@
           <span>Baby is already practicing late-night party mode.</span>
         </div>
       </section>
+
+      <!-- Baby Mini Game: Catch the Binkies -->
+      <section class="card">
+        <div class="card-header">
+          <div class="card-title">Baby Mini Game</div>
+          <div class="pill-light">Catch the Binkies</div>
+        </div>
+        <p class="registry-intro">
+          Tap the floating binkies to earn soothe points before the timer runs out.
+        </p>
+
+        <div id="baby-game">
+          <div class="baby-game-top">
+            <div>Score: <span id="baby-score">0</span></div>
+            <div>Time: <span id="baby-time">10</span>s</div>
+          </div>
+          <div id="baby-field">
+            <!-- Binkies will appear here -->
+            <div id="baby-message">Tap 'Start' to begin</div>
+          </div>
+          <button id="baby-start">Start</button>
+        </div>
+      </section>
     </main>
-
-    <!-- Baby Mini Game: Catch the Binkies -->
-    <section class="card" style="margin-top:24px;">
-      <div class="card-header">
-        <div class="card-title">Baby Mini Game</div>
-        <div class="pill-light">Catch the Binkies</div>
-      </div>
-      <p class="registry-intro">
-        Tap the floating binkies to earn soothe points before the timer runs out.
-      </p>
-
-      <div id="baby-game">
-        <div class="baby-game-top">
-          <div>Score: <span id="baby-score">0</span></div>
-          <div>Time: <span id="baby-time">10</span>s</div>
-        </div>
-        <div id="baby-field">
-          <!-- Binkies will appear here -->
-          <div id="baby-message">Tap "Start" to begin</div>
-        </div>
-        <button id="baby-start">Start</button>
-      </div>
-    </section>
 
     <footer>
       Made with love in 2026 · Amb &amp; Q
@@ -536,6 +476,34 @@
   </div>
 
   <script>
+    // Countdown Timer
+    (function() {
+      const countdownEl = document.getElementById("countdown");
+      const dueDate = new Date("July 7, 2026 00:00:00").getTime();
+
+      function updateCountdown() {
+        const now = new Date().getTime();
+        const distance = dueDate - now;
+
+        if (distance < 0) {
+          countdownEl.textContent = "Baby is here! 🎉";
+          return;
+        }
+
+        const months = Math.floor(distance / (1000 * 60 * 60 * 24 * 30.44));
+        const days = Math.floor((distance % (1000 * 60 * 60 * 24 * 30.44)) / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        countdownEl.textContent = `${months}mo ${days}d ${hours}h ${minutes}m ${seconds}s`;
+      }
+
+      updateCountdown();
+      setInterval(updateCountdown, 1000);
+    })();
+
+    // Baby Game
     (function () {
       const field = document.getElementById("baby-field");
       const scoreEl = document.getElementById("baby-score");
