@@ -604,10 +604,12 @@
           <div class="name-input-group">
             <input type="text" class="name-input" id="name-guess" placeholder="Your guess..." maxlength="20">
             <button class="name-submit" id="name-submit">Submit</button>
+                        <div class="name-guesses" id="name-guesses"></div>
           </div>
         </div>
       </section>
 
+      
       <!-- Baby Mini Game: Catch the Bottles -->
       <section class="card">
         <div class="card-header">
@@ -750,27 +752,15 @@
       const guessInput = document.getElementById('name-guess');
       const submitBtn = document.getElementById('name-submit');
       const guessesEl = document.getElementById('name-guesses');
-      let guesses = JSON.parse(localStorage.getItem('babyNameGuesses') || '[]');
 
-      function renderGuesses() {
-        if (guesses.length === 0) {
-          guessesEl.innerHTML = '';
-        } else {
-          guessesEl.innerHTML = guesses.map(g => 
-            `<span class="guess-item">${g}</span>`
-          ).join('');
-        }
-      }
 
       submitBtn.addEventListener('click', () => {
         const guess = guessInput.value.trim();
-        if (guess && !guesses.includes(guess)) {
-          guesses.push(guess);
-          localStorage.setItem('babyNameGuesses', JSON.stringify(guesses));
-          guessInput.value = '';
-          renderGuesses();
-        } else if (guesses.includes(guess)) {
-          guessInput.value = '';
+              if (guess.toLowerCase() === 'nayla') {
+        guessesEl.innerHTML = '<span style="color: #4CAF50; font-weight: bold;">🎉 Correct! You guessed it! 🎉</span>';
+      } else if (guess) {
+        guessesEl.innerHTML = '<span style="color: #f44336;">❌ Wrong! Try again!</span>';
+      }
           // Could add a shake animation or notification here
         }
       });
@@ -779,7 +769,6 @@
         if (e.key === 'Enter') submitBtn.click();
       });
 
-      renderGuesses();
     })();
 
     // Baby Game
