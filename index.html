@@ -535,7 +535,7 @@
       transform: translateY(0);
     }
 
-    .name-guesses {
+    . {
       min-height: 60px;
       padding: 12px;
       background: rgba(123, 92, 255, 0.04);
@@ -546,7 +546,7 @@
       overflow-y: auto;
     }
 
-    .name-guesses:empty::before {
+    .:empty::before {
       content: ';
       color: var(--text-soft);
       opacity: 0.6;
@@ -605,7 +605,6 @@
             <input type="text" class="name-input" id="name-guess" placeholder="Your guess..." maxlength="20">
             <button class="name-submit" id="name-submit">Submit</button>
           </div>
-          <div class="name-guesses" id="name-guesses"></div>
         </div>
       </section>
 
