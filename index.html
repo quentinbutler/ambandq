@@ -542,9 +542,15 @@
       border-radius: 12px;
       font-size: 0.85rem;
       color: var(--text-soft);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      max-height: 120px;
+      overflow-y: auto;
+    }
+
+    .name-guesses:empty::before {
+      content: 'No guesses yet. Be the first! 🎯';
+      color: var(--text-soft);
+      opacity: 0.6;
+      font-style: italic;
     }
 
     .guess-item {
@@ -745,47 +751,36 @@
       const guessInput = document.getElementById('name-guess');
       const submitBtn = document.getElementById('name-submit');
       const guessesEl = document.getElementById('name-guesses');
-      const correctName = 'Nayla';
-      let hasGuessedCorrectly = localStorage.getItem('guessedCorrectly') === 'true';
+      let guesses = JSON.parse(localStorage.getItem('babyNameGuesses') || '[]');
 
-      function renderMessage(message, isCorrect = false) {
-        guessesEl.innerHTML = `<div style="text-align: center; ${isCorrect ? 'color: var(--primary); font-weight: 600; font-size: 1rem;' : ''}">${message}</div>`;
-      }
-
-      function checkGuess(guess) {
-        if (guess.toLowerCase() === correctName.toLowerCase()) {
-          hasGuessedCorrectly = true;
-          localStorage.setItem('guessedCorrectly', 'true');
-          renderMessage('🎉 You guessed it! The name is Nayla! 🎉', true);
-          guessInput.disabled = true;
-          submitBtn.disabled = true;
-          submitBtn.textContent = '✓ Correct!';
+      function renderGuesses() {
+        if (guesses.length === 0) {
+          guessesEl.innerHTML = '';
         } else {
-          renderMessage('❌ Wrong! Try again!');
+          guessesEl.innerHTML = guesses.map(g => 
+            `<span class="guess-item">${g}</span>`
+          ).join('');
         }
-      }
-
-      if (hasGuessedCorrectly) {
-        renderMessage('🎉 You guessed it! The name is Nayla! 🎉', true);
-        guessInput.disabled = true;
-        submitBtn.disabled = true;
-        submitBtn.textContent = '✓ Correct!';
-      } else {
-        // Show initial message before any guess
-        renderMessage('💭 Take a guess and see if you\\'re right!');
       }
 
       submitBtn.addEventListener('click', () => {
         const guess = guessInput.value.trim();
-        if (guess && !hasGuessedCorrectly) {
-          checkGuess(guess);
+        if (guess && !guesses.includes(guess)) {
+          guesses.push(guess);
+          localStorage.setItem('babyNameGuesses', JSON.stringify(guesses));
           guessInput.value = '';
+          renderGuesses();
+        } else if (guesses.includes(guess)) {
+          guessInput.value = '';
+          // Could add a shake animation or notification here
         }
       });
 
       guessInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') submitBtn.click();
       });
+
+      renderGuesses();
     })();
 
     // Baby Game
