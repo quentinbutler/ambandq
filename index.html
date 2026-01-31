@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Amb & Q · Baby Registry</title>
+  <title>Baby on the Way</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     :root {
@@ -168,7 +168,7 @@
     }
 
     main {
-      margin-top: 16px;
+      margin-top: 32px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -485,6 +485,96 @@
         font-size: 18px;
       }
     }
+
+    /* Baby name guessing game */
+    .name-game {
+      margin-top: 12px;
+    }
+
+    .name-input-group {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .name-input {
+      flex: 1;
+      padding: 10px 16px;
+      border: 1px solid rgba(123, 92, 255, 0.2);
+      border-radius: 999px;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      background: rgba(255, 255, 255, 0.9);
+    }
+
+    .name-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(123, 92, 255, 0.1);
+    }
+
+    .name-submit {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: white;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: transform 0.1s, box-shadow 0.2s;
+      box-shadow: 0 4px 12px rgba(123, 92, 255, 0.3);
+    }
+
+    .name-submit:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(123, 92, 255, 0.4);
+    }
+
+    .name-submit:active {
+      transform: translateY(0);
+    }
+
+    .name-guesses {
+      min-height: 60px;
+      padding: 12px;
+      background: rgba(123, 92, 255, 0.04);
+      border-radius: 12px;
+      font-size: 0.85rem;
+      color: var(--text-soft);
+      max-height: 120px;
+      overflow-y: auto;
+    }
+
+    .name-guesses:empty::before {
+      content: 'No guesses yet. Be the first! 🎯';
+      color: var(--text-soft);
+      opacity: 0.6;
+      font-style: italic;
+    }
+
+    .guess-item {
+      display: inline-block;
+      margin: 3px 4px;
+      padding: 4px 12px;
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(123, 92, 255, 0.15);
+      border-radius: 999px;
+      font-size: 0.85rem;
+      animation: guessAppear 0.3s ease-out;
+    }
+
+    @keyframes guessAppear {
+      from {
+        opacity: 0;
+        transform: scale(0.8);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -500,7 +590,26 @@
     </header>
 
     <main>
-            <!-- Baby Mini Game: Catch the Bottles -->
+      <!-- Name Guessing Game -->
+      <section class="card">
+        <div class="card-header">
+          <div class="card-title">Guess the Name</div>
+          <div class="pill-light">What will it be?</div>
+        </div>
+        <p class="registry-intro">
+          We'd love to hear your guesses! What do you think we'll name our little one?
+        </p>
+        
+        <div class="name-game">
+          <div class="name-input-group">
+            <input type="text" class="name-input" id="name-guess" placeholder="Your guess..." maxlength="20">
+            <button class="name-submit" id="name-submit">Submit</button>
+          </div>
+          <div class="name-guesses" id="name-guesses"></div>
+        </div>
+      </section>
+
+      <!-- Baby Mini Game: Catch the Bottles -->
       <section class="card">
         <div class="card-header">
           <div class="card-title">Baby Mini Game</div>
@@ -522,7 +631,8 @@
           <button id="baby-start">Start</button>
         </div>
       </section>
-<!-- Registry & Details -->
+
+      <!-- Registry & Details -->
       <section class="card registry-card">
         <div class="card-header">
           <div class="card-title">Baby Registry</div>
@@ -549,7 +659,6 @@
           <span>Baby is already practicing late-night party mode.</span>
         </div>
       </section>
-
     </main>
 
     <footer>
@@ -635,6 +744,43 @@
 
       updateCountdown();
       setInterval(updateCountdown, 1000);
+    })();
+
+    // Name Guessing Game
+    (function() {
+      const guessInput = document.getElementById('name-guess');
+      const submitBtn = document.getElementById('name-submit');
+      const guessesEl = document.getElementById('name-guesses');
+      let guesses = JSON.parse(localStorage.getItem('babyNameGuesses') || '[]');
+
+      function renderGuesses() {
+        if (guesses.length === 0) {
+          guessesEl.innerHTML = '';
+        } else {
+          guessesEl.innerHTML = guesses.map(g => 
+            `<span class="guess-item">${g}</span>`
+          ).join('');
+        }
+      }
+
+      submitBtn.addEventListener('click', () => {
+        const guess = guessInput.value.trim();
+        if (guess && !guesses.includes(guess)) {
+          guesses.push(guess);
+          localStorage.setItem('babyNameGuesses', JSON.stringify(guesses));
+          guessInput.value = '';
+          renderGuesses();
+        } else if (guesses.includes(guess)) {
+          guessInput.value = '';
+          // Could add a shake animation or notification here
+        }
+      });
+
+      guessInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') submitBtn.click();
+      });
+
+      renderGuesses();
     })();
 
     // Baby Game
