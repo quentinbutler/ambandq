@@ -562,6 +562,34 @@
     </header>
 
     <main>
+      <!-- Registry & Details — moved to top -->
+      <section class="card registry-card">
+        <div class="card-header">
+          <div class="card-title">Baby Registry</div>
+          <div class="pill-light">Your love means everything</div>
+        </div>
+        <p class="registry-intro">
+          We are so grateful for your prayers, love, and support during this special season. If you feel led to bless us further, our registry is available below.
+        </p>
+
+        <div class="registry-list">
+          <a class="registry-link" href="https://www.amazon.com/baby-reg/aq--quentin-butler-july-2026-accokeek/NFNGG073Z9JP?ref_=cm_sw_r_cp_ud_dp_QDPS5WF46HTD0XQRD992" target="_blank" rel="noreferrer">
+            <span>
+              <span class="registry-link-icon">A</span>
+              Amazon registry
+            </span>
+            <span>Open</span>
+          </a>
+        </div>
+
+        <div class="baby-pulse">
+          <div class="pulse-dot">
+            <span></span><span></span><span></span>
+          </div>
+          <span>Baby is already practicing late-night party mode.</span>
+        </div>
+      </section>
+
       <!-- Name Guessing Game -->
       <section class="card">
         <div class="card-header">
@@ -601,34 +629,6 @@
             <div id="baby-message">Tap 'Start' to begin</div>
           </div>
           <button id="baby-start">Start</button>
-        </div>
-      </section>
-
-      <!-- Registry & Details -->
-      <section class="card registry-card">
-        <div class="card-header">
-          <div class="card-title">Baby Registry</div>
-          <div class="pill-light">Your love means everything</div>
-        </div>
-        <p class="registry-intro">
-          We are so grateful for your prayers, love, and support during this special season. If you feel led to bless us further, our registry is available below.
-        </p>
-
-        <div class="registry-list">
-          <a class="registry-link" href="https://www.amazon.com/baby-reg/aq--quentin-butler-july-2026-accokeek/NFNGG073Z9JP?ref_=cm_sw_r_cp_ud_dp_QDPS5WF46HTD0XQRD992" target="_blank" rel="noreferrer">
-            <span>
-              <span class="registry-link-icon">A</span>
-              Amazon registry
-            </span>
-            <span>Open</span>
-          </a>
-        </div>
-
-        <div class="baby-pulse">
-          <div class="pulse-dot">
-            <span></span><span></span><span></span>
-          </div>
-          <span>Baby is already practicing late-night party mode.</span>
         </div>
       </section>
     </main>
@@ -727,7 +727,7 @@
       let hasGuessedCorrectly = localStorage.getItem('guessedCorrectly') === 'true';
 
       function renderMessage(message, isCorrect = false) {
-        guessesEl.innerHTML = `<div style="text-align: center; ${isCorrect ? 'color: var(--primary); font-weight: 600; font-size: 1rem;' : ''}">${message}</div>`;
+        guessesEl.innerHTML = \`<div style="text-align: center; \${isCorrect ? 'color: var(--primary); font-weight: 600; font-size: 1rem;' : ''}">\${message}</div>\`;
       }
 
       function checkGuess(guess) {
@@ -749,8 +749,7 @@
         submitBtn.disabled = true;
         submitBtn.textContent = '✓ Correct!';
       } else {
-        // Show initial message before any guess
-        renderMessage('💭 Take a guess and see if you\'re right!');
+        renderMessage('💭 Take a guess and see if you\\\'re right!');
       }
 
       submitBtn.addEventListener('click', () => {
