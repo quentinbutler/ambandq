@@ -646,21 +646,21 @@
       let previousValues = { months: 0, days: 0, hours: 0, minutes: 0, seconds: 0 };
 
       function createFlipUnit(value, label) {
-        return \`
+        return `
           <div class="flip-unit">
-            <div class="flip-card" data-label="\${label}">
+            <div class="flip-card" data-label="${label}">
               <div class="flip-card-inner">
-                <div class="flip-card-front">\${value}</div>
-                <div class="flip-card-back">\${value}</div>
+                <div class="flip-card-front">${value}</div>
+                <div class="flip-card-back">${value}</div>
               </div>
             </div>
-            <div class="flip-label">\${label}</div>
+            <div class="flip-label">${label}</div>
           </div>
-        \`;
+        `;
       }
 
       function updateFlipCard(label, newValue) {
-        const card = countdownEl.querySelector(\`[data-label="\${label}"]\`);
+        const card = countdownEl.querySelector(`[data-label="${label}"]`);
         if (!card) return;
 
         const front = card.querySelector('.flip-card-front');
@@ -727,7 +727,7 @@
       let hasGuessedCorrectly = localStorage.getItem('guessedCorrectly') === 'true';
 
       function renderMessage(message, isCorrect = false) {
-        guessesEl.innerHTML = \`<div style="text-align: center; \${isCorrect ? 'color: var(--primary); font-weight: 600; font-size: 1rem;' : ''}">\${message}</div>\`;
+        guessesEl.innerHTML = `<div style="text-align: center; ${isCorrect ? 'color: var(--primary); font-weight: 600; font-size: 1rem;' : ''}">${message}</div>`;
       }
 
       function checkGuess(guess) {
@@ -749,7 +749,7 @@
         submitBtn.disabled = true;
         submitBtn.textContent = '✓ Correct!';
       } else {
-        renderMessage('💭 Take a guess and see if you\\\'re right!');
+        renderMessage('💭 Take a guess and see if you\'re right!');
       }
 
       submitBtn.addEventListener('click', () => {
