@@ -562,49 +562,7 @@
     </header>
 
     <main>
-      <!-- Name Guessing Game -->
-      <section class="card">
-        <div class="card-header">
-          <div class="card-title">Quentin's Guess the Name Game</div>
-          <div class="pill-light">What will it be?</div>
-        </div>
-        <p class="registry-intro">
-          We'd love to hear your guesses! What do you think we'll name her?
-        </p>
-        
-        <div class="name-game">
-          <div class="name-input-group">
-            <input type="text" class="name-input" id="name-guess" placeholder="Your guess..." maxlength="20">
-            <button class="name-submit" id="name-submit">Submit</button>
-          </div>
-          <div class="name-guesses" id="name-guesses"></div>
-        </div>
-      </section>
-
-      <!-- Baby Mini Game: Catch the Bottles -->
-      <section class="card">
-        <div class="card-header">
-          <div class="card-title">Amber's Baby Mini Game</div>
-          <div class="pill-light">Catch the Bottles</div>
-        </div>
-        <p class="registry-intro">
-          Tap the floating bottles to earn comfort points before the timer runs out.
-        </p>
-
-        <div id="baby-game">
-          <div class="baby-game-top">
-            <div>Score: <span id="baby-score">0</span></div>
-            <div>Time: <span id="baby-time">10</span>s</div>
-          </div>
-          <div id="baby-field">
-            <!-- Binkies will appear here -->
-            <div id="baby-message">Tap 'Start' to begin</div>
-          </div>
-          <button id="baby-start">Start</button>
-        </div>
-      </section>
-
-      <!-- Registry & Details -->
+      <!-- Registry & Details — moved to top -->
       <section class="card registry-card">
         <div class="card-header">
           <div class="card-title">Baby Registry</div>
@@ -631,6 +589,48 @@
           <span>Baby is already practicing late-night party mode.</span>
         </div>
       </section>
+
+      <!-- Name Guessing Game -->
+      <section class="card">
+        <div class="card-header">
+          <div class="card-title">Guess the Name Game</div>
+          <div class="pill-light">What will it be?</div>
+        </div>
+        <p class="registry-intro">
+          We'd love to hear your guesses! What do you think we'll name her?
+        </p>
+        
+        <div class="name-game">
+          <div class="name-input-group">
+            <input type="text" class="name-input" id="name-guess" placeholder="Your guess..." maxlength="20">
+            <button class="name-submit" id="name-submit">Submit</button>
+          </div>
+          <div class="name-guesses" id="name-guesses"></div>
+        </div>
+      </section>
+
+      <!-- Baby Mini Game: Catch the Bottles -->
+      <section class="card">
+        <div class="card-header">
+          <div class="card-title">Baby Mini Game</div>
+          <div class="pill-light">Catch the Bottles</div>
+        </div>
+        <p class="registry-intro">
+          Tap the floating bottles to earn comfort points before the timer runs out.
+        </p>
+
+        <div id="baby-game">
+          <div class="baby-game-top">
+            <div>Score: <span id="baby-score">0</span></div>
+            <div>Time: <span id="baby-time">10</span>s</div>
+          </div>
+          <div id="baby-field">
+            <!-- Binkies will appear here -->
+            <div id="baby-message">Tap 'Start' to begin</div>
+          </div>
+          <button id="baby-start">Start</button>
+        </div>
+      </section>
     </main>
 
     <footer>
@@ -646,21 +646,21 @@
       let previousValues = { months: 0, days: 0, hours: 0, minutes: 0, seconds: 0 };
 
       function createFlipUnit(value, label) {
-        return `
+        return \`
           <div class="flip-unit">
-            <div class="flip-card" data-label="${label}">
+            <div class="flip-card" data-label="\${label}">
               <div class="flip-card-inner">
-                <div class="flip-card-front">${value}</div>
-                <div class="flip-card-back">${value}</div>
+                <div class="flip-card-front">\${value}</div>
+                <div class="flip-card-back">\${value}</div>
               </div>
             </div>
-            <div class="flip-label">${label}</div>
+            <div class="flip-label">\${label}</div>
           </div>
-        `;
+        \`;
       }
 
       function updateFlipCard(label, newValue) {
-        const card = countdownEl.querySelector(`[data-label="${label}"]`);
+        const card = countdownEl.querySelector(\`[data-label="\${label}"]\`);
         if (!card) return;
 
         const front = card.querySelector('.flip-card-front');
@@ -727,7 +727,7 @@
       let hasGuessedCorrectly = localStorage.getItem('guessedCorrectly') === 'true';
 
       function renderMessage(message, isCorrect = false) {
-        guessesEl.innerHTML = `<div style="text-align: center; ${isCorrect ? 'color: var(--primary); font-weight: 600; font-size: 1rem;' : ''}">${message}</div>`;
+        guessesEl.innerHTML = \`<div style="text-align: center; \${isCorrect ? 'color: var(--primary); font-weight: 600; font-size: 1rem;' : ''}">\${message}</div>\`;
       }
 
       function checkGuess(guess) {
@@ -749,8 +749,7 @@
         submitBtn.disabled = true;
         submitBtn.textContent = '✓ Correct!';
       } else {
-        // Show initial message before any guess
-        renderMessage('💭 Take a guess and see if you\'re right!');
+        renderMessage('💭 Take a guess and see if you\\\'re right!');
       }
 
       submitBtn.addEventListener('click', () => {
